@@ -54,7 +54,11 @@
         //update height in case of dynamic content
         s.stickyWrapper.css('height', s.stickyElement.outerHeight());
 
-        if (scrollTop <= etse) {
+        // Fix height issue on equal height of sticky element and window height
+        var preventSticky = false;
+        if (s.stickyElement.outerHeight() > windowHeight) {preventSticky = true;}
+
+        if (scrollTop <= etse || preventSticky) {
           if (s.currentTop !== null) {
             s.stickyElement
               .css({
