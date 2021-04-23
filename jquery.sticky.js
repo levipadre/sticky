@@ -50,7 +50,8 @@
         var s = sticked[i],
           elementTop = s.stickyWrapper.offset().top,
           etse = elementTop - s.topSpacing - extra,
-          parentPadding = (s.stickyElement.parent().parent().outerHeight() - s.stickyElement.parent().parent().height()) / 2; // custom parent padding
+          parentPadding = (s.stickyElement.parent().parent().outerHeight() - s.stickyElement.parent().parent().height()) / 2,  // custom parent padding
+          bottom = documentHeight - s.stickyElement.outerHeight() - s.topSpacing - s.bottomSpacing - scrollTop - extra;
 
         //update height in case of dynamic content
         s.stickyWrapper.css('height', s.stickyElement.outerHeight());
@@ -65,11 +66,12 @@
               .css({
                 // 'width': '',
                 'position': 'absolute',
-                'top': scrollTop - elementTop + s.topSpacing + parentPadding, // make same top position as before
+                'top': bottom > 0 ? (scrollTop - elementTop + s.topSpacing + parentPadding) : 'auto', // make same top position as before
+                'bottom': bottom <= 0 ? parentPadding : 'auto' // if reaches the bottom
                 // 'z-index': ''
               });
             // s.stickyElement.parent().removeClass(s.className);
-            // s.stickyElement.trigger('sticky-end', [s]);
+            s.stickyElement.trigger('sticky-end', [s]);
             s.currentTop = null;
           }
         }
